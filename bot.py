@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import time
 import openai
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -113,5 +114,11 @@ def handle_prompt():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/')
+def home():
+    return jsonify({"message": "Lion Pro Dev API is running!", "status": "success"})
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3050, debug=True)
+    # Use Railway's PORT environment variable or default to 3050
+    port = int(os.environ.get('PORT', 3050))
+    app.run(host='0.0.0.0', port=port, debug=False)
